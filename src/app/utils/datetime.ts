@@ -69,3 +69,21 @@ export const fromISOtoFormattedTimestamp = (
     ? timestampConvertion.toFormat(format)
     : "";
 };
+
+/**
+ * Convert the timestamp to a special format
+ * @param timestamp It is a string with the value of the timestamp to convert
+ * @param zone As default it is `UTC`, but you can set the zone of the current value of the timestamp.
+ *  Here is the list of valid timezones: https://moment.github.io/luxon/docs/manual/zones
+ * @returns the timestamp in milliseconds
+ * If the timestamp is not valid, the function will return the number zero.
+ */
+export const fromISOtoMilliseconds = (
+  timestamp: string,
+  zone: string = UTC_ZONE
+) => {
+  const timestampConvertion = DateTime.fromISO(timestamp, { zone });
+  return timestampConvertion.isValid
+    ? timestampConvertion.toMillis()
+    : 0;
+};

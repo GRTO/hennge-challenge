@@ -4,12 +4,11 @@ import { HenngeTable } from "./app/components/Table/HenngeTable";
 import mockData from "./data/mockData.json";
 
 function App() {
-  console.log("mockData", mockData);
   const header = [
-    { type: "string", value: "From", sorting: false },
-    { type: "string", value: "To", sorting: false },
+    { type: "string", value: "From", sorting: true },
+    { type: "string", value: "To", sorting: true },
     { type: "string", value: "Subject", sorting: false },
-    { type: "datetime", value: "Date", sorting: false },
+    { type: "datetime", value: "Date", sorting: true },
   ];
   const data = mockData.data.map((email) => [
     {

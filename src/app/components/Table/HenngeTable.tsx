@@ -1,6 +1,13 @@
 import React from "react";
 import { TableHeaderStyles, TableBodyStyles } from "./HenngeTable.theme";
-import { fromISOtoFormattedTimestamp } from "../../utils/datetime";
+import {
+  fromISOtoFormattedTimestamp,
+} from "../../utils/datetime";
+import {
+  compareDatetime,
+  compareString,
+  getOrder,
+} from "../../utils/datatable";
 
 interface IHeader {
   type: string;
@@ -62,7 +69,10 @@ export const HenngeTable: React.FC<{
   /**
    * headerClicked
    */
-  const [headerCicked, setHeaderClicked] = React.useState();
+  const [headerCicked, setHeaderClicked] = React.useState({
+    key: "",
+    order: "",
+  });
   const headersCount = headers.length || 1;
   /**
    * Align the data columns according the header position
@@ -73,18 +83,40 @@ export const HenngeTable: React.FC<{
   /**
    * Sort the data according the header clicked
    */
-
   const handleSortHeader = (dataSorted: IRow[], header: IHeader) => {
     /**Just sort if the sorting function is available. */
-    // if (header.sorting) {
-    //   const newDataSorted = dataSorted.sort((rowA, rowB) => {
-    //     const valueA = rowA.find((cellA) => cellA.key === header.value) || "";
-    //     const valueB = rowB.find((cellB) => cellB.key === header.value) || "";
-    //     if (header.type === "datetime") {
-    //     }
-    //     // return valueA - valueB;
-    //   });
-    // }
+    if (header.sorting) {
+      /** Get the order */
+      const order = getOrder(headerCicked, header.value);
+      /** Set the last order in the table */
+      setHeaderClicked({ key: header.value, order });
+      /** Sort the array */
+      const newDataSorted = dataSorted.sort((rowA, rowB) => {
+        const valueA = rowA.find((cellA) => cellA.key === header.value) || {
+          key: header.value,
+          value: "",
+        };
+        const valueB = rowB.find((cellB) => cellB.key === header.value) || {
+          key: header.value,
+          value: "",
+        };
+        if (header.type === "datetime") {
+          return compareDatetime(
+            String(valueA.value),
+            String(valueB.value),
+            order
+          );
+        } else if (header.type === "string") {
+          return compareString(
+            String(valueA.value),
+            String(valueB.value),
+            order
+          );
+        }
+        return Number(valueA.value) - Number(valueB.value);
+      });
+      setDataSorted(newDataSorted);
+    }
   };
 
   return (
