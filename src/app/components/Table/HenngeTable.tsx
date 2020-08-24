@@ -1,13 +1,14 @@
 import React from "react";
 import { TableHeaderStyles, TableBodyStyles } from "./HenngeTable.theme";
-import {
-  fromISOtoFormattedTimestamp,
-} from "../../utils/datetime";
+import { fromISOtoFormattedTimestamp } from "../../utils/datetime";
 import {
   compareDatetime,
   compareString,
   getOrder,
+  ASC,
 } from "../../utils/datatable";
+import { Icon } from "../Icon/Icon";
+import upArrow from "../../../assets/images/icon_arrow01.svg";
 
 interface IHeader {
   type: string;
@@ -22,6 +23,13 @@ type IRow = ICell[];
 interface IHashKeys {
   [key: string]: number;
 }
+
+const renderOrderIcon = (order: string) => (
+  <Icon
+    src={upArrow}
+    css={{ transform: order === ASC ? "rotate(180deg)" : "" }}
+  />
+);
 
 const renderCell = (cell: ICell, type: string) => {
   switch (type) {
@@ -69,7 +77,7 @@ export const HenngeTable: React.FC<{
   /**
    * headerClicked
    */
-  const [headerCicked, setHeaderClicked] = React.useState({
+  const [headerClicked, setHeaderClicked] = React.useState({
     key: "",
     order: "",
   });
@@ -87,7 +95,7 @@ export const HenngeTable: React.FC<{
     /**Just sort if the sorting function is available. */
     if (header.sorting) {
       /** Get the order */
-      const order = getOrder(headerCicked, header.value);
+      const order = getOrder(headerClicked, header.value);
       /** Set the last order in the table */
       setHeaderClicked({ key: header.value, order });
       /** Sort the array */
@@ -129,7 +137,10 @@ export const HenngeTable: React.FC<{
             css={TableHeaderStyles.tableHeaderCell}
             onClick={() => handleSortHeader(dataSorted, header)}
           >
-            {header.value}
+            <div>{header.value}</div>
+            {headerClicked.key === header.value
+              ? renderOrderIcon(headerClicked.order)
+              : ""}
           </div>
         ))}
       </div>

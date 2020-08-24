@@ -7,6 +7,7 @@ export const TableHeaderStyles = {
   tableHeaderCell: css`
     display: flex;
     align-items: center;
+    justify-content: space-between;
     flex: 1;
     padding: 0 1rem;
     background-color: #eff2f4;

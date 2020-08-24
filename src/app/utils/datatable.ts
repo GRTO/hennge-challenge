@@ -1,7 +1,7 @@
 import { fromISOtoMilliseconds } from "./datetime";
 
-const ASC = "ASC";
-const DESC = "DESC";
+export const ASC = "ASC";
+export const DESC = "DESC";
 
 export const getOrder = (
   prevStatus: { key: string; order: string },
@@ -33,5 +33,5 @@ export const compareDatetime = (
 ) => {
   const millisecondsA = fromISOtoMilliseconds(timestampA);
   const millisecondsB = fromISOtoMilliseconds(timestampB);
-  return (millisecondsA - millisecondsB) * (order === ASC ? 1 : -1);
+  return (millisecondsB - millisecondsA) * (order === ASC ? 1 : -1);
 };
