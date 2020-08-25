@@ -33,7 +33,7 @@
       },
       "subject": "Happy New Year! Greetings for the New Year",
       "body": "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      "files": [],
+      "files": ["myfile1.pdf"],
       "timestamp": "2020-08-21T19:01:22.000Z"
     },
     {
@@ -93,7 +93,7 @@
       },
       "subject": "Workplace Summary for sample, Inc.: Jun 2 - Jun 9",
       "body": "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      "files": [],
+      "files": ["myfile4.jpg"],
       "timestamp": "2020-08-19T10:01:22.000Z"
     },
     {
@@ -105,7 +105,7 @@
       },
       "subject": "I love you",
       "body": "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      "files": [],
+      "files": ["myfile2.pdf", "myfile3.pdf"],
       "timestamp": "2020-08-19T10:01:22.000Z"
     },
     {

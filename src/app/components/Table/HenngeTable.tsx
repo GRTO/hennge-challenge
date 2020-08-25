@@ -5,7 +5,6 @@ import {
   compareDatetime,
   compareString,
   getOrder,
-  ASC,
 } from "../../utils/datatable";
 import { Icon } from "../Icon/Icon";
 import upArrow from "../../../assets/images/icon_arrow01.svg";
@@ -16,7 +15,11 @@ interface IHeader {
   sorting: boolean;
 }
 
-type ICell = { key: string; value: string | HTMLElement };
+type ICell = {
+  key: string;
+  value: string | number;
+  renderElement: string | number | JSX.Element;
+};
 
 type IRow = ICell[];
 
@@ -25,14 +28,17 @@ interface IHashKeys {
 }
 
 const renderOrderIcon = (order: string) => (
-  <Icon
-    src={upArrow}
-    css={{ transform: order === ASC ? "rotate(180deg)" : "" }}
-  />
+  <Icon src={upArrow} css={TableHeaderStyles.sortingHeaderIcon(order)} />
 );
 
 const renderCell = (cell: ICell, type: string) => {
   switch (type) {
+    case "element":
+      return (
+        <div css={TableBodyStyles.tableBodyCellElement}>
+          {cell.renderElement}
+        </div>
+      );
     case "string":
       return <div css={TableBodyStyles.tableBodyCellString}>{cell.value}</div>;
     case "datetime":
@@ -114,7 +120,7 @@ export const HenngeTable: React.FC<{
             String(valueB.value),
             order
           );
-        } else if (header.type === "string") {
+        } else if (header.type === "string" || header.type === "element") {
           return compareString(
             String(valueA.value),
             String(valueB.value),
@@ -134,7 +140,9 @@ export const HenngeTable: React.FC<{
         {headers.map((header) => (
           <div
             key={`header-${header.value}`}
-            css={TableHeaderStyles.tableHeaderCell}
+            css={TableHeaderStyles.tableHeaderCell(
+              headerClicked.key === header.value
+            )}
             onClick={() => handleSortHeader(dataSorted, header)}
           >
             <div>{header.value}</div>
