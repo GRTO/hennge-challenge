@@ -8,6 +8,7 @@ import {
 } from "../../utils/datatable";
 import { Icon } from "../Icon/Icon";
 import upArrow from "../../../assets/images/icon_arrow01.svg";
+import { TableEmptyMessage } from "./TableEmptyMessage/TableEmptyMessage";
 
 interface IHeader {
   type: string;
@@ -95,6 +96,12 @@ export const HenngeTable: React.FC<{
     alignedDataByHeader(data, headers)
   );
   /**
+   * Update if any value has changed
+   */
+  React.useEffect(() => {
+    setDataSorted(alignedDataByHeader(data, headers));
+  }, [data, headers]);
+  /**
    * Sort the data according the header clicked
    */
   const handleSortHeader = (dataSorted: IRow[], header: IHeader) => {
@@ -135,38 +142,50 @@ export const HenngeTable: React.FC<{
 
   return (
     <>
-      {/** Header */}
-      <div css={TableHeaderStyles.tableHeaderContainer}>
-        {headers.map((header) => (
-          <div
-            key={`header-${header.value}`}
-            css={TableHeaderStyles.tableHeaderCell(
-              headerClicked.key === header.value
-            )}
-            onClick={() => handleSortHeader(dataSorted, header)}
-          >
-            <div>{header.value}</div>
-            {headerClicked.key === header.value
-              ? renderOrderIcon(headerClicked.order)
-              : ""}
-          </div>
-        ))}
-      </div>
-      {/** Rows */}
-      <div css={TableBodyStyles.tableBodyContainer}>
-        {dataSorted.map((row, index) => (
-          <div key={`Row-${index}`} css={TableBodyStyles.tableBodyRow}>
-            {row.map((cell, index) => (
+      {data.length > 0 ? (
+        <>
+          {/** Header */}
+          <div css={TableHeaderStyles.tableHeaderContainer}>
+            {headers.map((header, index) => (
               <div
-                key={`Cell-${cell.key}-${index}`}
-                css={TableBodyStyles.tableBodyCell(headersCount)}
+                key={`header-${header.value}`}
+                css={TableHeaderStyles.tableHeaderCell(
+                  headerClicked.key === header.value
+                )}
+                onClick={() => handleSortHeader(dataSorted, header)}
               >
-                {renderCell(cell, headers[index].type)}
+                <div
+                  css={TableHeaderStyles.tableHeaderCellValue(
+                    index === headers.length - 1
+                  )}
+                >
+                  <div>{header.value}</div>
+                  {headerClicked.key === header.value
+                    ? renderOrderIcon(headerClicked.order)
+                    : ""}
+                </div>
               </div>
             ))}
           </div>
-        ))}
-      </div>
+          {/** Rows */}
+          <div css={TableBodyStyles.tableBodyContainer}>
+            {dataSorted.map((row, index) => (
+              <div key={`Row-${index}`} css={TableBodyStyles.tableBodyRow}>
+                {row.map((cell, index) => (
+                  <div
+                    key={`Cell-${cell.key}-${index}`}
+                    css={TableBodyStyles.tableBodyCell(headersCount)}
+                  >
+                    {renderCell(cell, headers[index].type)}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <TableEmptyMessage />
+      )}
     </>
   );
 };

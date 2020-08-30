@@ -9,6 +9,7 @@ import {
 } from "./HenngeDatePicker.theme";
 import { Icon } from "../Icon/Icon";
 import IconCalendar from "../../../assets/images/icon_calender.svg";
+import { fromLocalJSONDateToUTCFormat } from "../../utils/datetime";
 
 const CalendarInputField: React.FC<{
   value: Date;
@@ -27,7 +28,10 @@ const START_DATE = "START_DATE";
 const END_DATE = "END_DATE";
 
 export const HenngeDatePicker: React.FC<{
-  handleDateSelection: (dateRange: { startDate: Date; endDate: Date }) => void;
+  handleDateSelection: (dateRange: {
+    startDate: string;
+    endDate: string;
+  }) => void;
 }> = ({ handleDateSelection }) => {
   // Handle the start date
   const [startDate, setStartDate] = React.useState(new Date());
@@ -51,10 +55,16 @@ export const HenngeDatePicker: React.FC<{
   const onChangeDate = (date: Date, dateIndex: string) => {
     if (dateIndex === START_DATE) {
       setStartDate(date);
-      handleDateSelection({ startDate: date, endDate });
+      handleDateSelection({
+        startDate: fromLocalJSONDateToUTCFormat(date, "start"),
+        endDate: fromLocalJSONDateToUTCFormat(endDate, "end"),
+      });
     } else {
       setEndDate(date);
-      handleDateSelection({ startDate, endDate: date });
+      handleDateSelection({
+        startDate: fromLocalJSONDateToUTCFormat(startDate, "start"),
+        endDate: fromLocalJSONDateToUTCFormat(date, "end"),
+      });
     }
   };
   return (

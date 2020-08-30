@@ -83,7 +83,49 @@ export const fromISOtoMilliseconds = (
   zone: string = UTC_ZONE
 ) => {
   const timestampConvertion = DateTime.fromISO(timestamp, { zone });
-  return timestampConvertion.isValid
-    ? timestampConvertion.toMillis()
-    : 0;
+  return timestampConvertion.isValid ? timestampConvertion.toMillis() : 0;
+};
+
+export const fromLocalJSONDateToUTCFormat = (
+  date: Date,
+  periodDate: string = "normal"
+) => {
+  // Get the correct format hours
+  let formatHours = "HH:mm:ss";
+  if (periodDate === "start") {
+    formatHours = "00:00:00";
+  } else if (periodDate === "end") {
+    formatHours = "23:59:59";
+  }
+  return (
+    DateTime.fromISO(
+      DateTime.fromJSDate(date).toFormat(`y-LL-dd'T'HH:mm:ss`) + ".00Z",
+      { zone: "UTC" }
+    ).toFormat(`y-LL-dd'T'${formatHours}`) + ".00Z"
+  );
+};
+
+/**
+ * Verify if a date is between the range of dates.
+ * @param startDate Start timestamp in ISO format
+ * @param endDate End timestamp in ISO format
+ * @param timestamp The timestamp you want to validate in ISO format
+ * @returns a `True` if the value is between the range of dates, either way it returns `False`
+ */
+export const isBetween = (
+  startDate: string,
+  endDate: string,
+  timestamp: string
+) => {
+  if (startDate === "" && endDate === "") {
+    return true;
+  }
+  const millisecondsTimestamp = fromISOtoMilliseconds(timestamp);
+  if (
+    fromISOtoMilliseconds(startDate) <= millisecondsTimestamp &&
+    millisecondsTimestamp <= fromISOtoMilliseconds(endDate)
+  ) {
+    return true;
+  }
+  return false;
 };

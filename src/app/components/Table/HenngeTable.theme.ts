@@ -4,17 +4,33 @@ import { ASC } from "../../utils/datatable";
 export const TableHeaderStyles = {
   tableHeaderContainer: css`
     display: flex;
+    @media (max-width: 420px) {
+      background-color: #eff2f4;
+      border-top: 2px solid #ccd2d6;
+      border-bottom: 2px solid #ccd2d6;
+    }
   `,
   tableHeaderCell: (clicked: boolean) => css`
     display: flex;
     align-items: center;
-    flex: 1;
-    padding: 0 1rem;
-    background-color: #eff2f4;
-    border-top: 2px solid #ccd2d6;
-    border-bottom: 2px solid #ccd2d6;
+    @media (min-width: 420px) {
+      flex: 1;
+      background-color: #eff2f4;
+      border-top: 2px solid #ccd2d6;
+      border-bottom: 2px solid #ccd2d6;
+      padding: 0 1rem;
+    }
+    padding: 0 0.5rem;
     min-height: 3rem;
     font-weight: ${clicked ? "bold" : "normal"};
+  `,
+  tableHeaderCellValue: (lastChild: boolean) => css`
+    display: flex;
+    align-items: center;
+    @media (max-width: 420px) {
+      padding-right: 0.5rem;
+      ${!lastChild ? `border-right: 2px solid #ccd2d6;` : ""}
+    }
   `,
   sortingHeaderIcon: (order: string) => css`
     transform: ${order === ASC ? "rotate(180deg)" : ""};

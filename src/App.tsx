@@ -1,13 +1,19 @@
 import React from "react";
-import { HenngeDatePicker } from "./app/components/DatePicker/HenngeDatePicker";
 import { ListMailsView } from "./app/pages/ListMails/ListMails.view";
+import styled from "@emotion/styled";
+
+const AppWrapper = styled.div<{}>({
+  display: "flex",
+  flexDirection: "column",
+  flex: 1,
+  height: '100%',
+});
 
 function App() {
   return (
-    <div className="App">
-      <HenngeDatePicker handleDateSelection={(response) => {}} />
+    <AppWrapper>
       <ListMailsView />
-    </div>
+    </AppWrapper>
   );
 }
 

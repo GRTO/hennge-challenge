@@ -14,7 +14,8 @@ export const DatePickerStyles = {
     align-items: center;
     align-content: center;
     border: 2px solid #ccd2d6;
-    border-radius: 0.5rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+    height: 2rem;
   `,
   datePickerSeparator: css`
     padding: 0 0.5rem;
