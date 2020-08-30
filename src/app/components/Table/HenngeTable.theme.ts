@@ -50,6 +50,13 @@ export const TableBodyStyles = {
     align-items: center;
     min-height: 3rem;
     border-bottom: 2px solid #ccd2d6;
+    @media (max-width: 420px) {
+      flex-direction: column;
+      align-items: start;
+    }
+    @media (max-width: 420px) {
+      padding: 0.5rem;
+    }
     &:hover {
       cursor: pointer;
       background-color: #fafbfc;
@@ -62,12 +69,15 @@ export const TableBodyStyles = {
   tableBodyCell: (headersCount: number) => css`
     display: flex;
     align-items: center;
-    padding: 0 1rem;
     align-items: center;
     flex: 1;
     overflow: hidden;
-    min-height: 3rem;
-    width: calc(100% / ${headersCount});
+    width: 100%;
+    @media (min-width: 420px) {
+      padding: 0 1rem;
+      width: calc(100% / ${headersCount});
+      min-height: 3rem;
+    }
   `,
   tableBodyCellString: css`
     overflow: hidden;
