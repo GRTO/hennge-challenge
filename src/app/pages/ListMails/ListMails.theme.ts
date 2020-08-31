@@ -32,6 +32,49 @@ export const ToColumnStyles = {
   `,
 };
 
+export const FromColumnStyles = {
+  fromContainer: css`
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;
+
+    @media (max-width: 420px) {
+      font-weight: bold;
+    }
+  `,
+  datetimeContainer: css`
+    display: flex;
+    align-items: center;
+    @media (min-width: 420px) {
+      display: none;
+    }
+  `,
+  datetimeSection: css`
+    display: flex;
+  `,
+  fromSection: css`
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    @media (max-width: 420px) {
+      max-width: 70%;
+    }
+  `,
+  actionSection: css`
+    display: flex;
+  `,
+};
+
+export const DateTimeStyles = {
+  datetimeContainer: css`
+    display: flex;
+    align-items: center;
+    @media (max-width: 420px) {
+      display: none;
+    }
+  `,
+};
+
 export const SearchStyles = {
   searchContainer: css`
     display: flex;

@@ -4,16 +4,19 @@ import mockData from "../../../data/mockData.json";
 import { Icon } from "../../components/Icon/Icon";
 import ClipSVG from "../../../assets/images/icon_clip.svg";
 import SearchSVG from "../../../assets/images/icon_search.svg";
+import redirectArrowSVG from "../../../assets/images/icon_arrow02.svg";
 import {
   SubjetColumnStyles,
   ToColumnStyles,
   SearchStyles,
   TableStyles,
   ResultStyles,
+  FromColumnStyles,
+  DateTimeStyles,
 } from "./ListMails.theme";
 import ReactResizeDetector from "react-resize-detector";
 import { HenngeDatePicker } from "../../components/DatePicker/HenngeDatePicker";
-import { isBetween } from "../../utils/datetime";
+import { isBetween, fromISOtoFormattedTimestamp } from "../../utils/datetime";
 
 interface IMail {
   from: string;
@@ -88,17 +91,44 @@ const ToColumn: React.FC<{ mail: IMail }> = ({ mail }) => {
   );
 };
 
-export const ListMailsView: React.FC = () => {
-  const [rangeDate, setRangeDate] = React.useState({
-    startDate: "",
-    endDate: "",
-  });
-  const [dataEmails, setDataEmails] = React.useState(
-    mockData.data.map((mail) => [
+const FromColumn: React.FC<{ mail: IMail }> = ({ mail }) => (
+  <div css={FromColumnStyles.fromContainer}>
+    <div css={FromColumnStyles.fromSection}>{mail.from}</div>
+    <div css={FromColumnStyles.datetimeContainer}>
+      <div css={FromColumnStyles.datetimeSection}>
+        {fromISOtoFormattedTimestamp(mail.timestamp)}
+      </div>
+      <div css={FromColumnStyles.actionSection}>
+        <Icon
+          src={redirectArrowSVG}
+          size={{ height: "0.5rem", width: "0.5rem" }}
+        />
+      </div>
+    </div>
+  </div>
+);
+
+const DateTimeColumn: React.FC<{ mail: IMail }> = ({ mail }) => (
+  <div css={DateTimeStyles.datetimeContainer}>
+    {fromISOtoFormattedTimestamp(mail.timestamp)}
+  </div>
+);
+
+interface IRangeDate {
+  startDate: string;
+  endDate: string;
+}
+
+const formatDatatableObject = (rangeDate: IRangeDate) =>
+  mockData.data
+    .filter((mail) =>
+      isBetween(rangeDate.startDate, rangeDate.endDate, mail.timestamp)
+    )
+    .map((mail) => [
       {
         key: "From",
         value: mail.from,
-        renderElement: mail.from,
+        renderElement: <FromColumn mail={mail} />,
       },
       {
         key: "To",
@@ -110,41 +140,30 @@ export const ListMailsView: React.FC = () => {
         value: mail.subject,
         renderElement: renderSubjectAttchedFiles(mail),
       },
-      { key: "Date", value: mail.timestamp, renderElement: mail.timestamp },
-    ])
+      {
+        key: "Date",
+        value: mail.timestamp,
+        renderElement: <DateTimeColumn mail={mail} />,
+      },
+    ]);
+
+export const ListMailsView: React.FC = () => {
+  const [rangeDate, setRangeDate] = React.useState({
+    startDate: "",
+    endDate: "",
+  });
+  const [dataEmails, setDataEmails] = React.useState(
+    formatDatatableObject(rangeDate)
   );
   const header = [
-    { type: "string", value: "From", sorting: true },
+    { type: "element", value: "From", sorting: true },
     { type: "element", value: "To", sorting: true },
     { type: "element", value: "Subject", sorting: false },
-    { type: "datetime", value: "Date", sorting: true },
+    { type: "element", value: "Date", sorting: true },
   ];
 
   const handleSearchEvent = () => {
-    setDataEmails(
-      mockData.data
-        .filter((mail) =>
-          isBetween(rangeDate.startDate, rangeDate.endDate, mail.timestamp)
-        )
-        .map((mail) => [
-          {
-            key: "From",
-            value: mail.from,
-            renderElement: mail.from,
-          },
-          {
-            key: "To",
-            value: mail.to.for.join(", "),
-            renderElement: <ToColumn mail={mail} />,
-          },
-          {
-            key: "Subject",
-            value: mail.subject,
-            renderElement: renderSubjectAttchedFiles(mail),
-          },
-          { key: "Date", value: mail.timestamp, renderElement: mail.timestamp },
-        ])
-    );
+    setDataEmails(formatDatatableObject(rangeDate));
   };
 
   return (
