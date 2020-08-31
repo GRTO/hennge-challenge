@@ -29,6 +29,20 @@ export const ToColumnStyles = {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    height: 0px;
+  `,
+  ToCountContainer: css`
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 0px;
+  `,
+  ToCountText: css`
+    background-color: #808080;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 0.25rem;
+    padding: 0 0.25rem;
   `,
 };
 
