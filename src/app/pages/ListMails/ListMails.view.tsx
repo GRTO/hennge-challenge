@@ -4,7 +4,8 @@ import mockData from "../../../data/mockData.json";
 import { Icon } from "../../components/Icon/Icon";
 import ClipSVG from "../../../assets/images/icon_clip.svg";
 import SearchSVG from "../../../assets/images/icon_search.svg";
-import redirectArrowSVG from "../../../assets/images/icon_arrow02.svg";
+import RedirectArrowSVG from "../../../assets/images/icon_arrow02.svg";
+import MailSVG from "../../../assets/images/icon_mail_sp.svg";
 import {
   SubjetColumnStyles,
   ToColumnStyles,
@@ -105,17 +106,27 @@ const ToColumn: React.FC<{ mail: IMail }> = ({ mail }) => {
 };
 
 const FromColumn: React.FC<{ mail: IMail }> = ({ mail }) => (
-  <div css={FromColumnStyles.fromContainer}>
-    <div css={FromColumnStyles.fromSection}>{mail.from}</div>
-    <div css={FromColumnStyles.datetimeContainer}>
-      <div css={FromColumnStyles.datetimeSection}>
-        {fromISOtoFormattedTimestamp(mail.timestamp)}
+  <div css={FromColumnStyles.fromFullContainer}>
+    <div css={FromColumnStyles.inboxIconContainer}>
+      <Icon src={MailSVG} size={{ height: "2rem", width: "2rem" }} />
+    </div>
+    <div css={FromColumnStyles.descriptionContainer}>
+      <div css={FromColumnStyles.fromContainer}>
+        <div css={FromColumnStyles.fromSection}>{mail.from}</div>
+        <div css={FromColumnStyles.datetimeContainer}>
+          <div css={FromColumnStyles.datetimeSection}>
+            {fromISOtoFormattedTimestamp(mail.timestamp)}
+          </div>
+          <div css={FromColumnStyles.actionSection}>
+            <Icon
+              src={RedirectArrowSVG}
+              size={{ height: "0.5rem", width: "0.5rem" }}
+            />
+          </div>
+        </div>
       </div>
-      <div css={FromColumnStyles.actionSection}>
-        <Icon
-          src={redirectArrowSVG}
-          size={{ height: "0.5rem", width: "0.5rem" }}
-        />
+      <div css={FromColumnStyles.toColumn}>
+        <ToColumn mail={mail} />
       </div>
     </div>
   </div>
@@ -146,7 +157,11 @@ const formatDatatableObject = (rangeDate: IRangeDate) =>
       {
         key: "To",
         value: mail.to.for.join(", "),
-        renderElement: <ToColumn mail={mail} />,
+        renderElement: (
+          <div css={ToColumnStyles.ToColumnWrapper}>
+            <ToColumn mail={mail} />
+          </div>
+        ),
       },
       {
         key: "Subject",

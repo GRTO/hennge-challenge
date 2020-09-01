@@ -31,6 +31,7 @@ export const TableHeaderStyles = {
       padding-right: 0.5rem;
       ${!lastChild ? `border-right: 2px solid #ccd2d6;` : ""}
     }
+    cursor: pointer;
   `,
   sortingHeaderIcon: (order: string) => css`
     transform: ${order === ASC ? "rotate(180deg)" : ""};
@@ -55,7 +56,7 @@ export const TableBodyStyles = {
       align-items: start;
     }
     @media (max-width: 420px) {
-      padding: 0.5rem;
+      padding: 1rem;
     }
     &:hover {
       cursor: pointer;
