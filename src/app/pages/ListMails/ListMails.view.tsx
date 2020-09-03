@@ -16,11 +16,15 @@ import { FromColumn } from "./FromColumn/FromColumn";
 import { DateTimeColumn } from "./DateTimeColumn/DateTimeColumn";
 import { IRangeDate } from "./ListMails.interface";
 import { SubjectColumn } from "./SubjectColumn/SubjectColumn";
+import { isWordOnEmail } from "../../utils/email";
+import { debounce } from "lodash";
 
-const formatDatatableObject = (rangeDate: IRangeDate) =>
+const formatDatatableObject = (rangeDate: IRangeDate, word: string) =>
   mockData.data
-    .filter((mail) =>
-      isBetween(rangeDate.startDate, rangeDate.endDate, mail.timestamp)
+    .filter(
+      (mail) =>
+        isBetween(rangeDate.startDate, rangeDate.endDate, mail.timestamp) &&
+        isWordOnEmail(mail, word)
     )
     .map((mail) => [
       {
@@ -54,9 +58,15 @@ export const ListMailsView: React.FC = () => {
     startDate: "",
     endDate: "",
   });
-  const [dataEmails, setDataEmails] = React.useState(
-    formatDatatableObject(rangeDate)
+  const [wordsIncluded, setWordsIncluded] = React.useState("");
+  const debounceSetWord = React.useCallback(
+    debounce((text) => setWordsIncluded(text), 300),
+    []
   );
+  const [dataEmails, setDataEmails] = React.useState(
+    formatDatatableObject(rangeDate, wordsIncluded)
+  );
+
   const header = [
     { type: "element", value: "From", sorting: true },
     { type: "element", value: "To", sorting: true },
@@ -64,14 +74,14 @@ export const ListMailsView: React.FC = () => {
     { type: "element", value: "Date", sorting: true },
   ];
 
-  const handleSearchEvent = () => {
-    setDataEmails(formatDatatableObject(rangeDate));
-  };
+  const handleSearchEvent = () =>
+    setDataEmails(formatDatatableObject(rangeDate, wordsIncluded));
 
   return (
     <>
       {/**Search section */}
       <div css={SearchStyles.searchContainer}>
+        <input onChange={(e) => debounceSetWord(e.target.value)} />
         <HenngeDatePicker
           handleDateSelection={(rangeDateSelection) => {
             setRangeDate(rangeDateSelection);
