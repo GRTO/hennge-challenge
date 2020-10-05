@@ -18,6 +18,7 @@ import { IRangeDate } from "./ListMails.interface";
 import { SubjectColumn } from "./SubjectColumn/SubjectColumn";
 import { isWordOnEmail } from "../../utils/email";
 import { debounce } from "lodash";
+import { Input } from "../../components/Input/Input";
 
 const formatDatatableObject = (rangeDate: IRangeDate, word: string) =>
   mockData.data
@@ -60,7 +61,7 @@ export const ListMailsView: React.FC = () => {
   });
   const [wordsIncluded, setWordsIncluded] = React.useState("");
   const debounceSetWord = React.useCallback(
-    debounce((text) => setWordsIncluded(text), 300),
+    debounce((text: string) => setWordsIncluded(text), 300),
     []
   );
   const [dataEmails, setDataEmails] = React.useState(
@@ -81,14 +82,22 @@ export const ListMailsView: React.FC = () => {
     <>
       {/**Search section */}
       <div css={SearchStyles.searchContainer}>
-        <input onChange={(e) => debounceSetWord(e.target.value)} />
-        <HenngeDatePicker
-          handleDateSelection={(rangeDateSelection) => {
-            setRangeDate(rangeDateSelection);
-          }}
-        />
-        <div css={SearchStyles.iconSearch} onClick={handleSearchEvent}>
-          <Icon src={SearchSVG} />
+        <div css={SearchStyles.filterSection}>
+          <div css={SearchStyles.inputContainer}>
+            <Input
+              placeholder={"Search ..."}
+              onChange={(e) => debounceSetWord(e.target.value)}
+            />
+          </div>
+          <HenngeDatePicker
+            handleDateSelection={(rangeDateSelection) => {
+              setRangeDate(rangeDateSelection);
+            }}
+          />
+          <div css={SearchStyles.iconSearch} onClick={handleSearchEvent}>
+            <Icon src={SearchSVG} />
+            <div css={SearchStyles.labelSearch}>Search</div>
+          </div>
         </div>
       </div>
       {/**Number of elements */}
